@@ -19,7 +19,7 @@ class PageFactory extends Factory
      */
     public function definition(): array
     {
-        $storyNumber = \App\Models\Story::inRandomOrder()->first()->id;
+        $storyNumber = \App\Models\Stories::inRandomOrder()->first()->id;
         // $nextPageNumber = \App\Models\Page::where('story_id', $storyNumber)->orderByDesc('page_number')->first()->page_number ?? 0;
         return [
             'story_id' => $storyNumber,

@@ -4,14 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('story', function (Blueprint $table) {
+        Schema::create('stories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('description');
@@ -26,33 +25,33 @@ return new class extends Migration
             $table->text('content');
             $table->timestamps();
             $table->primary(['story_id', 'page_number']);
-        });        
+        });
         Schema::create('types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
         });
-        
+
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
         });
-        
+
         Schema::create('story_type', function (Blueprint $table) {
             $table->id();
             $table->foreignId('story_id')->constrained()->onDelete('cascade');
             $table->foreignId('type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-        
+
         Schema::create('story_tag', function (Blueprint $table) {
             $table->id();
             $table->foreignId('story_id')->constrained()->onDelete('cascade');
             $table->foreignId('tag_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
-        
+
     }
 
     /**
@@ -60,6 +59,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('story');
+        Schema::dropIfExists('stories');
     }
 };

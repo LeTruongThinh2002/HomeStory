@@ -15,6 +15,6 @@ class Tag extends Model
 
     public function story()
     {
-        return $this->belongsToMany(Story::class);
+        return $this->belongsToMany(Stories::class);
     }
 }

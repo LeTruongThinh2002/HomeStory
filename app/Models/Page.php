@@ -18,7 +18,7 @@ class Page extends Model
 
     public function story()
     {
-        return $this->belongsTo(Story::class);
+        return $this->belongsTo(Stories::class);
     }
 }
 

@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Story;
 use App\Models\Tag;
 use App\Models\Type;
 use App\Models\Page;
+use App\Models\Stories;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         User::factory(10)->create();
-        Story::factory(10)->create();
+        Stories::factory(10)->create();
         Tag::factory(10)->create();
         Type::factory(10)->create();
         Page::factory(50)->create();
