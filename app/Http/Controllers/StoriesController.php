@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stories;
 use App\Http\Requests\StoreStoriesRequest;
 use App\Http\Requests\UpdateStoriesRequest;
+use App\Http\Resources\StoriesResource;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Inertia\Inertia;
@@ -16,8 +17,10 @@ class StoriesController extends Controller
      */
     public function index(Request $request): Response
     {
+        $query = Stories::query();
+        $stories = $query->paginate();
         return Inertia::render('Stories/index', [
-            'stories' => Stories::all(),
+            'stories' => StoriesResource::collection($stories)
         ]);
     }
 

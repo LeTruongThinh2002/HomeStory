@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
+use App\Http\Resources\PageResource;
+use Inertia\Inertia;
 
 class PageController extends Controller
 {
@@ -13,7 +15,11 @@ class PageController extends Controller
      */
     public function index()
     {
-        //
+        $query = Page::query();
+        $page = $query->paginate();
+        return Inertia::render('Page/index', [
+            'page' => PageResource::collection($page)
+        ]);
     }
 
     /**

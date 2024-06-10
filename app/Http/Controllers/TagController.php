@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use App\Http\Resources\TagResource;
+use Inertia\Inertia;
 
 class TagController extends Controller
 {
@@ -13,7 +15,11 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $query = Tag::query();
+        $tag = $query->paginate();
+        return Inertia::render('Tag/index', [
+            'tag' => TagResource::collection($tag)
+        ]);
     }
 
     /**

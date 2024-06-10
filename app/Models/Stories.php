@@ -31,4 +31,9 @@ class Stories extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function poster()
+    {
+        return $this->belongsTo(User::class, 'poster');
+    }
 }

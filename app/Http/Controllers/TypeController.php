@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Type;
 use App\Http\Requests\StoreTypeRequest;
 use App\Http\Requests\UpdateTypeRequest;
+use App\Http\Resources\TypeResource;
+use Inertia\Inertia;
 
 class TypeController extends Controller
 {
@@ -13,7 +15,11 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $query = Type::query();
+        $type = $query->paginate();
+        return Inertia::render('Type/index', [
+            'type' => TypeResource::collection($type)
+        ]);
     }
 
     /**
