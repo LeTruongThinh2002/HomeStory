@@ -31,7 +31,12 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
           key === "image"
             ? (row: any) => <img src={row[key]} alt={key} />
             : undefined,
-        width: key === "id" ? "100px" : key === "image" ? "150px" : "",
+        width:
+          key === "id" || key === "story_id" || key === "page_number"
+            ? "100px"
+            : key === "image"
+            ? "150px"
+            : "",
       };
     }
   );
