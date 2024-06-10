@@ -34,8 +34,10 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
         width:
           key === "id" || key === "story_id" || key === "page_number"
             ? "100px"
-            : key === "image"
+            : key === "image" || key === "name"
             ? "150px"
+            : key === "created_at" || key === "updated_at" || key === "content"
+            ? "200px"
             : "",
       };
     }
