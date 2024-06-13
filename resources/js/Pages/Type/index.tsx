@@ -5,7 +5,7 @@ export const index = ({ auth, type }: any) => {
     <DataTables
       auth={auth}
       title="Management Type"
-      packages={type["data"]}
+      packages={type}
       object="type"
     />
   );

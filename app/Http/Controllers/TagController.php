@@ -16,7 +16,7 @@ class TagController extends Controller
     public function index()
     {
         $query = Tag::query();
-        $tag = $query->paginate();
+        $tag = $query->paginate(5);
         return Inertia::render('Tag/index', [
             'tag' => TagResource::collection($tag)
         ]);

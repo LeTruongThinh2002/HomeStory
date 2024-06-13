@@ -5,7 +5,7 @@ export const index = ({ auth, stories }: any) => {
     <DataTables
       auth={auth}
       title="Management Stories"
-      packages={stories["data"]}
+      packages={stories}
       object="stories"
     />
   );

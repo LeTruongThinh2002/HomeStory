@@ -16,7 +16,7 @@ class PageController extends Controller
     public function index()
     {
         $query = Page::query();
-        $page = $query->paginate();
+        $page = $query->paginate(5);
         return Inertia::render('Page/index', [
             'page' => PageResource::collection($page)
         ]);

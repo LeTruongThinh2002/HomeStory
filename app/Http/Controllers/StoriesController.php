@@ -18,9 +18,9 @@ class StoriesController extends Controller
     public function index(Request $request): Response
     {
         $query = Stories::query();
-        $stories = $query->paginate();
+        $stories = $query->paginate(5);
         return Inertia::render('Stories/index', [
-            'stories' => StoriesResource::collection($stories)
+            'stories' => StoriesResource::collection($stories),
         ]);
     }
 

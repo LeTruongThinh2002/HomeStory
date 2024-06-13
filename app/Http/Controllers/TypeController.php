@@ -16,7 +16,7 @@ class TypeController extends Controller
     public function index()
     {
         $query = Type::query();
-        $type = $query->paginate();
+        $type = $query->paginate(5);
         return Inertia::render('Type/index', [
             'type' => TypeResource::collection($type)
         ]);
