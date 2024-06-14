@@ -69,6 +69,6 @@ class StoriesController extends Controller
      */
     public function destroy(Stories $stories)
     {
-        //
+        $stories->delete();
     }
 }

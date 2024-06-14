@@ -18,6 +18,8 @@ class PageResource extends JsonResource
         return [
             "story_id" => $this->story_id,
             "page_number" => $this->page_number,
+            "title" => $this->story['title'],
+            "image" => $this->story['image'],
             "content" => $this->content,
             "created_at" => (new Carbon($this->created_at))->format('Y-m-d H:i:s'),
             "updated_at" => (new Carbon($this->updated_at))->format('Y-m-d H:i:s'),

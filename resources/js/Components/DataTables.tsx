@@ -61,7 +61,11 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
             ? "100px"
             : key === "image" || key === "name"
             ? "150px"
-            : key === "created_at" || key === "updated_at" || key === "content"
+            : key === "created_at" ||
+              key === "updated_at" ||
+              key === "content" ||
+              key === "tags" ||
+              key === "types"
             ? "200px"
             : "300px",
       };
@@ -125,12 +129,9 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
             </div>
             <div>
               <DataTable
-                // pagination
                 columns={columns}
                 pointerOnHover
-                //highlightOnHover
                 data={data}
-                // sortIcon={sortIcon}
                 onRowClicked={(row: any) => console.log(row)}
                 theme="dark"
               />
@@ -142,19 +143,43 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
       {/* modal delete */}
       <Modal
         children={
-          <div className="max-h-[90vh] overflow-auto no-scrollbar">
+          <div className="max-h-[90vh] m-2 overflow-auto dark:text-white no-scrollbar">
+            <h1 className="relative text-2xl ">
+              Are you sure you want to delete?
+            </h1>
             <button
-              className="text-white text-3xl z-0"
+              className="absolute top-2 right-2 text-3xl z-0"
               onClick={handleCloseModal}
             >
               <CgClose />
             </button>
-            <DataTable
-              columns={column}
-              pointerOnHover
-              data={[selectedRowDel]}
-              theme="dark"
-            />
+            <div className="flex flex-col  gap-2 justify-center items-center my-4">
+              {selectedRowDel.image && (
+                <img
+                  src={selectedRowDel.image}
+                  width={100}
+                  alt={selectedRowDel.image}
+                />
+              )}
+              <span>
+                {selectedRowDel?.title}
+                {selectedRowDel?.name}
+                {selectedRowDel.page_number &&
+                  ` - Page ${selectedRowDel.page_number}`}
+                {selectedRowDel.author && ` - ${selectedRowDel.author}`}
+                {selectedRowDel.email && ` - ${selectedRowDel.email}`}
+              </span>
+            </div>
+            <Link
+              className="float-right font-medium py-2 px-4 border rounded border-red-600 dark:border-red-500 text-red-600 dark:text-red-500 hover:bg-red-600 hover:dark:text-white"
+              onClick={() => {
+                handleCloseModal();
+              }}
+              // route(`${object}.destroy`, selectedRowDel)
+              href={"#"}
+            >
+              Delete
+            </Link>
           </div>
         }
         show={showModal}

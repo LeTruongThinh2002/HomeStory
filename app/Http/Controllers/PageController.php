@@ -6,6 +6,8 @@ use App\Models\Page;
 use App\Http\Requests\StorePageRequest;
 use App\Http\Requests\UpdatePageRequest;
 use App\Http\Resources\PageResource;
+use App\Models\Stories;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class PageController extends Controller
@@ -18,7 +20,7 @@ class PageController extends Controller
         $query = Page::query();
         $page = $query->paginate(5);
         return Inertia::render('Page/index', [
-            'page' => PageResource::collection($page)
+            'page' => PageResource::collection($page),
         ]);
     }
 
