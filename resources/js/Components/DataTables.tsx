@@ -8,6 +8,8 @@ import DataTable, {
 import Modal from "./Modal";
 import { CgClose } from "react-icons/cg";
 import Pagination from "./Pagination";
+import TextInput from "./TextInput";
+import SelectInput from "./SelectInput";
 
 export const DataTables = ({ auth, title, packages, object }: any) => {
   createTheme("dark", {
@@ -90,8 +92,15 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
       };
     }
   );
-  const data = packages["data"];
+  let data = packages["data"];
 
+  if (object === "stories") {
+    data = packages["data"].map((story: any) => ({
+      ...story,
+      types: story.types.map((type: any) => type.name).join(", "),
+      tags: story.tags.map((tag: any) => tag.name).join(", "),
+    }));
+  }
   const [showModal, setShowModal] = useState(false);
   const [selectedRowDel, setSelectedRowDel] = useState<any>([]);
 
@@ -126,6 +135,8 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
               >
                 Add
               </Link>
+              <TextInput />
+              <SelectInput />
             </div>
             <div>
               <DataTable

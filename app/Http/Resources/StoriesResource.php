@@ -22,8 +22,8 @@ class StoriesResource extends JsonResource
             "image" => $this->image,
             "author" => $this->author,
             "poster" => $this->poster,
-            "types" => $this->type,
-            "tags" => $this->tag,
+            "types" => TypeResource::collection($this->types),
+            "tags" => TagResource::collection($this->tags),
             "created_at" => (new Carbon($this->created_at))->format('Y-m-d H:i:s'),
             "updated_at" => (new Carbon($this->updated_at))->format('Y-m-d H:i:s'),
         ];

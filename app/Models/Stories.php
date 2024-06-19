@@ -24,12 +24,12 @@ class Stories extends Model
 
     public function types()
     {
-        return $this->belongsToMany(Type::class);
+        return $this->belongsToMany(Type::class, 'story_type');
     }
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'story_tag');
     }
 
     public function poster()
