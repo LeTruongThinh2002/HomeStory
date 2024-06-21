@@ -16,6 +16,9 @@ class TypeController extends Controller
     public function index()
     {
         $query = Type::query();
+        if (request()->has("name")) {
+            $query->where("name", "like", "%" . request()->get("name") . "%");
+        }
         $type = $query->paginate(5);
         return Inertia::render('Type/index', [
             'type' => TypeResource::collection($type)

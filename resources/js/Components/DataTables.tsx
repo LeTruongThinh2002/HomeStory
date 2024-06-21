@@ -1,17 +1,21 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
-import { useState } from "react";
+import { Head, Link, router } from "@inertiajs/react";
 import DataTable, {
   TableColumn,
   createTheme,
 } from "react-data-table-component";
-import Modal from "./Modal";
-import { CgClose } from "react-icons/cg";
 import Pagination from "./Pagination";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
+import DeleteModal from "./DeleteModal";
 
-export const DataTables = ({ auth, title, packages, object }: any) => {
+export const DataTables = ({
+  auth,
+  title,
+  packages,
+  object,
+  searchQuery = {},
+}: any) => {
   createTheme("dark", {
     text: {
       primary: "#268bd2",
@@ -38,14 +42,8 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
           >
             Edit
           </button>
-          <button
-            className="font-medium py-2 px-4 border rounded border-red-600 dark:border-red-500 text-red-600 dark:text-red-500 hover:bg-red-600 hover:dark:text-white"
-            onClick={() => {
-              handleShowModal(row);
-            }}
-          >
-            Delete
-          </button>
+
+          <DeleteModal selectedRowDel={row} />
         </div>
       ),
       width: "110px", // adjust the width as needed
@@ -59,7 +57,7 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
         cell: (row: any) =>
           key === "image" ? <img src={row[key]} alt={key} /> : row[key],
         width:
-          key === "id" || key === "story_id" || key === "page_number"
+          key === "id" || key === "stories_id" || key === "page_number"
             ? "100px"
             : key === "image" || key === "name"
             ? "150px"
@@ -73,25 +71,6 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
       };
     })
   );
-  const column: TableColumn<any>[] = Object.keys(packages["data"][0]).map(
-    (key: string) => {
-      return {
-        name: key.charAt(0).toUpperCase() + key.slice(1),
-        selector: (row: any) => row[key],
-        sortable: true,
-        cell: (row: any) =>
-          key === "image" ? <img src={row[key]} alt={key} /> : row[key],
-        width:
-          key === "id" || key === "story_id" || key === "page_number"
-            ? "100px"
-            : key === "image" || key === "name"
-            ? "150px"
-            : key === "created_at" || key === "updated_at" || key === "content"
-            ? "200px"
-            : "",
-      };
-    }
-  );
   let data = packages["data"];
 
   if (object === "stories") {
@@ -101,17 +80,21 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
       tags: story.tags.map((tag: any) => tag.name).join(", "),
     }));
   }
-  const [showModal, setShowModal] = useState(false);
-  const [selectedRowDel, setSelectedRowDel] = useState<any>([]);
 
-  const handleShowModal = async (rows: any) => {
-    await setSelectedRowDel(rows);
-    setShowModal(!showModal);
+  const searchFieldChanged = (name: any, value: string) => {
+    if (value) {
+      searchQuery[name] = value;
+    } else {
+      delete searchQuery[name];
+    }
+    router.get(object, searchQuery);
   };
-
-  const handleCloseModal = () => {
-    setShowModal(!showModal);
-    console.log(packages);
+  const handleSelectType = (types: any, type: any) => {
+    searchQuery[types] = type;
+  };
+  const onKeyPress = (name: string, e: any) => {
+    if (e.key !== "Enter") return;
+    searchFieldChanged(name, e.target.value);
   };
 
   return (
@@ -127,16 +110,35 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
       <div className="py-12">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div className="p-2 sm:p-4 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
-            <div className="flex gap-2">
+            <div className="flex md:flex-row flex-col gap-2">
               {/* add new */}
               <Link
                 href={route(`${object}.add`)}
-                className="font-medium py-2 px-4 border rounded border-green-600 dark:border-green-500 text-green-600 dark:text-green-500 hover:bg-green-600 hover:dark:text-white"
+                className="font-medium w-fit py-2 px-4 border rounded border-green-600 dark:border-green-500 text-green-600 dark:text-green-500 hover:bg-green-600 hover:dark:text-white"
               >
                 Add
               </Link>
-              <TextInput />
-              <SelectInput />
+              <TextInput
+                defaultValue={searchQuery?.name}
+                placeholder="Search name..."
+                onBlur={(e: any) => searchFieldChanged("name", e.target.value)}
+                onKeyPress={(e: any) => onKeyPress("name", e)}
+              />
+              {object === "stories" && (
+                <SelectInput
+                  onChange={(e: any) =>
+                    handleSelectType("types", e.target.value)
+                  }
+                  defaultValue={searchQuery?.types}
+                >
+                  <option value="">Select type</option>
+                  {packages["types"]?.map((type: any) => (
+                    <option key={type.id} value={type.name}>
+                      {type.name}
+                    </option>
+                  ))}
+                </SelectInput>
+              )}
             </div>
             <div>
               <DataTable
@@ -151,52 +153,6 @@ export const DataTables = ({ auth, title, packages, object }: any) => {
           </div>
         </div>
       </div>
-      {/* modal delete */}
-      <Modal
-        children={
-          <div className="max-h-[90vh] m-2 overflow-auto dark:text-white no-scrollbar">
-            <h1 className="relative text-2xl ">
-              Are you sure you want to delete?
-            </h1>
-            <button
-              className="absolute top-2 right-2 text-3xl z-0"
-              onClick={handleCloseModal}
-            >
-              <CgClose />
-            </button>
-            <div className="flex flex-col  gap-2 justify-center items-center my-4">
-              {selectedRowDel.image && (
-                <img
-                  src={selectedRowDel.image}
-                  width={100}
-                  alt={selectedRowDel.image}
-                />
-              )}
-              <span>
-                {selectedRowDel?.title}
-                {selectedRowDel?.name}
-                {selectedRowDel.page_number &&
-                  ` - Page ${selectedRowDel.page_number}`}
-                {selectedRowDel.author && ` - ${selectedRowDel.author}`}
-                {selectedRowDel.email && ` - ${selectedRowDel.email}`}
-              </span>
-            </div>
-            <Link
-              className="float-right font-medium py-2 px-4 border rounded border-red-600 dark:border-red-500 text-red-600 dark:text-red-500 hover:bg-red-600 hover:dark:text-white"
-              onClick={() => {
-                handleCloseModal();
-              }}
-              // route(`${object}.destroy`, selectedRowDel)
-              href={"#"}
-            >
-              Delete
-            </Link>
-          </div>
-        }
-        show={showModal}
-        onClose={handleCloseModal}
-        closeable={!showModal}
-      />
     </AuthenticatedLayout>
   );
 };

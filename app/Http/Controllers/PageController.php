@@ -18,6 +18,12 @@ class PageController extends Controller
     public function index()
     {
         $query = Page::query();
+        if (request()->has("name")) {
+            $title = is_array(request()->get("name")) ? request()->get("name") : explode(",", request()->get("name"));
+            $query->whereHas('stories', function ($q) use ($title) {
+                $q->where('title', 'like', '%' . request()->get("name") . '%');
+            });
+        }
         $page = $query->paginate(5);
         return Inertia::render('Page/index', [
             'page' => PageResource::collection($page),

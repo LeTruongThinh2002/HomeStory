@@ -16,10 +16,10 @@ class PageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "story_id" => $this->story_id,
+            "stories_id" => $this->stories_id,
             "page_number" => $this->page_number,
-            "title" => $this->story['title'],
-            "image" => $this->story['image'],
+            "title" => $this->stories['title'],
+            "image" => $this->stories['image'],
             "content" => $this->content,
             "created_at" => (new Carbon($this->created_at))->format('Y-m-d H:i:s'),
             "updated_at" => (new Carbon($this->updated_at))->format('Y-m-d H:i:s'),

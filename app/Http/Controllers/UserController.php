@@ -16,6 +16,9 @@ class UserController extends Controller
     public function index()
     {
         $query = User::query();
+        if (request()->has("name")) {
+            $query->where("name", "like", "%" . request()->get("name") . "%", 'or', 'email', "like", "%" . request()->get("name") . "%");
+        }
         $user = $query->paginate(5);
         return Inertia::render('User/index', [
             'user' => UserResource::collection($user)

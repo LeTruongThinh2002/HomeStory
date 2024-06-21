@@ -1,10 +1,18 @@
 import DataTables from "@/Components/DataTables";
+import SearchNull from "@/Components/SearchNull";
 
 export const index = ({ auth, user }: any) => {
-  return (
+  return user["data"].length !== 0 ? (
     <DataTables
       auth={auth}
-      title="Management User"
+      title="Management user"
+      packages={user}
+      object="user"
+    />
+  ) : (
+    <SearchNull
+      auth={auth}
+      title="Management user"
       packages={user}
       object="user"
     />

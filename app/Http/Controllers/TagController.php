@@ -16,6 +16,9 @@ class TagController extends Controller
     public function index()
     {
         $query = Tag::query();
+        if (request()->has("name")) {
+            $query->where("name", "like", "%" . request()->get("name") . "%");
+        }
         $tag = $query->paginate(5);
         return Inertia::render('Tag/index', [
             'tag' => TagResource::collection($tag)

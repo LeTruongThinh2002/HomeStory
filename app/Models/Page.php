@@ -11,12 +11,12 @@ class Page extends Model
     protected $table = 'pages';
 
     protected $fillable = [
-        'story_id',
+        'stories_id',
         'page_number',
         'content',
     ];
 
-    public function story()
+    public function stories()
     {
         return $this->belongsTo(Stories::class);
     }
