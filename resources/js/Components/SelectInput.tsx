@@ -1,9 +1,10 @@
-import { forwardRef, InputHTMLAttributes } from "react";
+import { forwardRef, InputHTMLAttributes, useRef } from "react";
 
 const SelectInput = forwardRef<
   HTMLSelectElement,
   InputHTMLAttributes<HTMLSelectElement>
->(function SelectInput({ className = "", children = null, ...props }, ref) {
+>(function SelectInput({ className = "", children = null, ...props }) {
+  const ref = useRef(null);
   return (
     <select
       {...props}

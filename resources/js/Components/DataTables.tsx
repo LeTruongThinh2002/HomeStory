@@ -55,7 +55,13 @@ export const DataTables = ({
         selector: (row: any) => row[key],
         sortable: false,
         cell: (row: any) =>
-          key === "image" ? <img src={row[key]} alt={key} /> : row[key],
+          key === "image" ? (
+            <img src={row[key]} alt={key} />
+          ) : key === "content" ? (
+            <p className="truncate">{row[key]}</p>
+          ) : (
+            row[key]
+          ),
         width:
           key === "id" || key === "stories_id" || key === "page_number"
             ? "100px"
@@ -72,7 +78,6 @@ export const DataTables = ({
     })
   );
   let data = packages["data"];
-
   if (object === "stories") {
     data = packages["data"].map((story: any) => ({
       ...story,
@@ -96,7 +101,7 @@ export const DataTables = ({
     if (e.key !== "Enter") return;
     searchFieldChanged(name, e.target.value);
   };
-
+  console.log(packages);
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -119,17 +124,18 @@ export const DataTables = ({
                 Add
               </Link>
               <TextInput
-                defaultValue={searchQuery?.name}
                 placeholder="Search name..."
+                defaultValue={packages.query?.name}
                 onBlur={(e: any) => searchFieldChanged("name", e.target.value)}
                 onKeyPress={(e: any) => onKeyPress("name", e)}
               />
               {object === "stories" && (
                 <SelectInput
+                  defaultValue={packages.query?.types}
                   onChange={(e: any) =>
                     handleSelectType("types", e.target.value)
                   }
-                  defaultValue={searchQuery?.types}
+                  onKeyPress={(e: any) => onKeyPress("name", e)}
                 >
                   <option value="">Select type</option>
                   {packages["types"]?.map((type: any) => (
@@ -148,7 +154,10 @@ export const DataTables = ({
                 onRowClicked={(row: any) => console.log(row)}
                 theme="dark"
               />
-              <Pagination links={packages["meta"].links} />
+              <Pagination
+                links={packages["meta"].links}
+                search={packages["query"]}
+              />
             </div>
           </div>
         </div>

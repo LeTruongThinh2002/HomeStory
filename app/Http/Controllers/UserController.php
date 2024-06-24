@@ -21,7 +21,9 @@ class UserController extends Controller
         }
         $user = $query->paginate(5);
         return Inertia::render('User/index', [
-            'user' => UserResource::collection($user)
+            'user' => UserResource::collection($user),
+            'searchQuery' => request(),
+
         ]);
     }
 

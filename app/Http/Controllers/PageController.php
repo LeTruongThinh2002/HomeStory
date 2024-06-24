@@ -19,14 +19,15 @@ class PageController extends Controller
     {
         $query = Page::query();
         if (request()->has("name")) {
-            $title = is_array(request()->get("name")) ? request()->get("name") : explode(",", request()->get("name"));
-            $query->whereHas('stories', function ($q) use ($title) {
-                $q->where('title', 'like', '%' . request()->get("name") . '%');
+            $name = request()->get("name");
+            $query->whereHas('stories', function ($q) use ($name) {
+                $q->where('title', 'like', '%' . $name . '%');
             });
         }
         $page = $query->paginate(5);
         return Inertia::render('Page/index', [
             'page' => PageResource::collection($page),
+            'searchQuery' => request(),
         ]);
     }
 

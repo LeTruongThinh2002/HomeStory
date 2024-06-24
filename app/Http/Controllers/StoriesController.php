@@ -35,6 +35,7 @@ class StoriesController extends Controller
         return Inertia::render('Stories/index', [
             'stories' => StoriesResource::collection($stories),
             'types' => TypeResource::collection(Type::all()),
+            'searchQuery' => request()
         ]);
     }
 

@@ -1,7 +1,8 @@
 import DataTables from "@/Components/DataTables";
 import SearchNull from "@/Components/SearchNull";
 
-export const index = ({ auth, type }: any) => {
+export const index = ({ auth, type, searchQuery = {} }: any) => {
+  type["query"] = searchQuery;
   return type["data"].length !== 0 ? (
     <DataTables
       auth={auth}

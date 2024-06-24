@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 
-const Pagination = ({ links }: any) => {
+const Pagination = ({ links, search = {} }: any) => {
   if (!Array.isArray(links)) {
     console.log(links);
     console.error("Pagination links should be an array");
@@ -12,7 +12,17 @@ const Pagination = ({ links }: any) => {
       {links.map((link: any) => (
         <Link
           preserveScroll
-          href={link.url || "#"}
+          href={
+            link.url && search.name && search.types
+              ? `${link.url}&name=${search.name}&types=${search.types}`
+              : link.url && search.name
+              ? `${link.url}&name=${search.name}`
+              : link.url && search.types
+              ? `${link.url}&types=${search.types}`
+              : link.url
+              ? link.url
+              : "#"
+          }
           key={link.label}
           dangerouslySetInnerHTML={{ __html: link.label }}
           className={

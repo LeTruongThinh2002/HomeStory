@@ -21,7 +21,9 @@ class TypeController extends Controller
         }
         $type = $query->paginate(5);
         return Inertia::render('Type/index', [
-            'type' => TypeResource::collection($type)
+            'type' => TypeResource::collection($type),
+            'searchQuery' => request(),
+
         ]);
     }
 

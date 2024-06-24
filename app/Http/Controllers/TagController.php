@@ -21,7 +21,9 @@ class TagController extends Controller
         }
         $tag = $query->paginate(5);
         return Inertia::render('Tag/index', [
-            'tag' => TagResource::collection($tag)
+            'tag' => TagResource::collection($tag),
+            'searchQuery' => request(),
+
         ]);
     }
 
